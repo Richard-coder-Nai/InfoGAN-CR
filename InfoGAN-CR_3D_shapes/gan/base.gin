@@ -1,0 +1,16 @@
+gan.epoch = 40
+gan.batch_size = 64
+gan.vis_freq = 2000
+gan.vis_num_sample = 10
+gan.vis_num_rep = 10
+gan.metric_freq = 400
+gan.info_coe_de = 0.2
+gan.info_coe_infod = 0.2
+gan.gap_start = 1.9
+gan.gap_decrease_times = 1
+gan.gap_decrease = 1.9
+gan.gap_decrease_batch = 85000
+gan.cr_coe_start = 0.0
+gan.cr_coe_increase_times = 1
+gan.cr_coe_increase = 3.0
+gan.cr_coe_increase_batch = 50000
