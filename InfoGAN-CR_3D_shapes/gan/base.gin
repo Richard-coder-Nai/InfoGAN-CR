@@ -1,3 +1,4 @@
+random_seed.seed=0
 gan.epoch = 40
 gan.batch_size = 64
 gan.vis_freq = 2000

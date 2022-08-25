@@ -3,6 +3,7 @@ import numpy as np
 from tqdm import tqdm
 import datetime
 import imageio
+import random
 import os
 import math
 import csv
@@ -12,6 +13,15 @@ import tensorflow_hub as hub
 import argparse
 import gin
 import gin.tf
+
+@gin.configurable('random_seed')
+def seed_tf(seed=0):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    tf.random.set_random_seed(seed)
+    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
 
 @gin.configurable("gan", 
         blacklist = [
@@ -175,7 +185,9 @@ class INFOGAN_CR(object):
 
         self.de_loss_fake = \
             -tf.reduce_mean(tf.log(self.xd_fake_image_train_tf + self.EPS))
+        # L_info
         self.de_loss_q = -tf.reduce_mean(self.reg_log_prob)
+        # L_cr
         self.de_loss_cr = tf.losses.softmax_cross_entropy(
             onehot_labels=self.crd_groundtruth,
             logits=self.crd_fake_image_train_tf)
@@ -581,6 +593,7 @@ if __name__ == "__main__":
     dir_name = args.dir_name
 
     gin.parse_config_files_and_bindings(gin_config_files, gin_bindings)
+    seed_tf()
 
     data, metric_data, latent_values = \
         load_3Dshapes("../data/3dshapes")
